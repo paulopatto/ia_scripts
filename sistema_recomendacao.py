@@ -1,5 +1,6 @@
 import heapq
 
+
 class Produto:
     def __init__(self, nome, categoria, conversao_probabilidade):
         self.nome = nome
@@ -8,6 +9,7 @@ class Produto:
 
     def __repr__(self):
         return f"{self.nome} ({self.categoria})"
+
 
 class AStarRecommendation:
     def __init__(self, produtos, heuristica):
@@ -24,7 +26,9 @@ class AStarRecommendation:
 
     def a_star(self, inicio, objetivo):
         fila_prioridade = []
-        heapq.heappush(fila_prioridade, (0 + self.heuristica(inicio), 0, inicio))  # f = g + h
+        heapq.heappush(
+            fila_prioridade, (0 + self.heuristica(inicio), 0, inicio)
+        )  # f = g + h
         visitados = set()
         caminhos = {}
 
@@ -41,7 +45,9 @@ class AStarRecommendation:
             for vizinho in self.grafo[atual]:
                 if vizinho not in visitados:
                     h = self.heuristica(vizinho)
-                    heapq.heappush(fila_prioridade, (g + 1 + h, g + 1, vizinho))  # g é o custo acumulado
+                    heapq.heappush(
+                        fila_prioridade, (g + 1 + h, g + 1, vizinho)
+                    )  # g é o custo acumulado
                     caminhos[vizinho] = atual
 
         # Recuperando o caminho
@@ -52,9 +58,13 @@ class AStarRecommendation:
             produto = caminhos[produto]
         return caminho
 
+
 def heuristica(produto):
     # Quanto maior a probabilidade de conversão, mais atraente é o produto
-    return -produto.conversao_probabilidade  # Vamos minimizar a heurística (quanto menor, melhor)
+    return (
+        -produto.conversao_probabilidade
+    )  # Vamos minimizar a heurística (quanto menor, melhor)
+
 
 # Exemplo de produtos
 produtos = [
@@ -77,3 +87,4 @@ caminho_recomendado = recomendador.a_star(inicio, objetivo)
 print("Caminho recomendado:")
 for p in caminho_recomendado:
     print(p)
+
